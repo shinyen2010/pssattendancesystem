@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    <!-- site metas -->
+    <title>PSS Attendance System</title>
+    <meta name="keywords" content="SMJK Katholik">
+    <meta name="description" content="Attendance System for CHS PSS">
+    <meta name="author" content="TSY101021">
+    <!-- fevicon -->
+    <link rel="icon" href="favicon.ico" type="image/gif" />
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: white;
+        }
+        h2 {
+            text-align: center;
+        }
+        #loginModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+        }
+        #loginModal.active {
+            visibility: visible;
+        }
+        #loginModal.dark-mode {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        #loginForm.dark-mode {
+            background-color: #444; /* Dark background for the form */
+            color: white; /* White text for dark mode */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Adjust shadow for dark mode */
+        }
+
+        #loginForm.dark-mode input {
+            background-color: #555; /* Dark input background */
+            color: white; /* White text inside the input */
+            border: 1px solid #777; /* Lighter border for input fields */
+        }
+
+        #loginForm.dark-mode button {
+            background-color: #14af47;
+            color: white;
+        }
+
+        #loginForm.dark-mode button:hover {
+            background-color: #03c94f;
+        }
+        #loginForm {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #loginForm h3 {
+            margin-bottom: 20px;
+        }
+        #loginForm input {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            width: calc(100% - 22px);
+            max-width: 280px;
+        }
+        #loginForm button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #loginForm button:hover {
+            background-color: #45a049;
+        }
+        #displaySection {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #form-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        #form-container button {
+            margin: 0 10px;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 30px;
+            background-color: #a945c2;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #form-container button:hover {
+            background-color: #d8b4e2;
+        }
+        #id-input {
+            margin-top: 20px;
+            display: none;
+            justify-content: center;
+        }
+        #id-input input {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        #id-input button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #export-container, #reset-container  {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        #second-mgmcontainer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        #reset-container, #second-mgmcontainer {
+            display: flex;
+            justify-content: center; /* Center align both containers */
+            margin-top: 20px;
+            width: 100%; /* Make sure they take the same width */
+            gap: 4px; /* Optional: Adds space between the buttons */
+        }
+        #themeToggle {
+            padding: 10px 20px;
+            background-color: #9c6de9;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px; /* Adjust the spacing from the top */
+            right: 20px; /* Adjust the spacing from the right */
+        }
+        #themeToggle:hover {
+            background-color: #7041df;
+        }
+        #exportButton {
+            padding: 10px 20px;
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        #exportButton:hover {
+            background-color: #4b4bbf;
+        }
+        #resetButton, #manageButton {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        #resetButton {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        #resetButton:hover {
+            background-color: #ff4b4b;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        #error {
+            color: red;
+            margin-top: 10px;
+        }
+        .psslogo {
+             max-width: 100%;
+             height: auto;
+             width: 150px;
+             text-align: center;
+             margin-left: auto;
+             margin-right: auto;
+             display: block;
+        }
+        
+        #themeToggle.dark-mode {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="themeToggle">Light Mode</button>
+
+    <figure><img src="img/logo.png" alt="#" class="psslogo"/></figure>
+    
+    <h2>PSS Attendance System</h2>
+
+    <!-- Login Modal -->
+    <div id="loginModal">
+        <div id="loginForm">
+            <h3>Login</h3>
+            <input type="text" id="loginUsername" placeholder="Username">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <button id="loginSubmit">Login</button>
+            <div id="loginError" class="error"></div>
+        </div>
+    </div>
+
+    <div id="displaySection">
+        <div id="form-container">
+            <button id="checkInButton">Check In</button>
+            <button id="checkOutButton">Check Out</button>
+        </div>
+
+        <div id="id-input">
+            <input type="text" id="userId" placeholder="Enter your ID">
+            <button id="submitButton" disabled>Submit</button>
+        </div>
+        <div id="error"></div>
+
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Check In</th>
+                    <th>Check Out</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Data will be dynamically added here -->
+            </tbody>
+        </table>
+
+        <div id="reset-container">
+            <button id="resetButton">Reset Table</button>
+            <button id="exportButton">Export to Excel</button>
+        </div>
+
+    </div>
+
+    <script>
+        const loginModal = document.getElementById('loginModal');
+        const loginUsername = document.getElementById('loginUsername');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginSubmit = document.getElementById('loginSubmit');
+        const loginError = document.getElementById('loginError');
+        const checkInButton = document.getElementById('checkInButton');
+        const checkOutButton = document.getElementById('checkOutButton');
+        const submitButton = document.getElementById('submitButton');
+        const exportButton = document.getElementById('exportButton');
+        const resetButton = document.getElementById('resetButton');
+        const idInputDiv = document.getElementById('id-input');
+        const userIdInput = document.getElementById('userId');
+        const errorDiv = document.getElementById('error');
+        const tableBody = document.getElementById('tableBody');
+        const themeToggle = document.getElementById('themeToggle');
+
+        let currentAction = '';
+        let validUsers = [];
+
+        const adminCredentials = {
+            username: 'LIB01',
+            password: 'chspss' // Set your own secure password
+        };
+
+        // Fetch valid user IDs from the API
+        function fetchValidUsers() {
+            fetch('https://pss-attendance.vercel.app/api/getAllUsers')
+                .then(response => response.json())
+                .then(data => {
+                    validUsers = data; // Store the full user objects
+                    console.log('Valid Users:', validUsers); // Debugging
+                })
+                .catch(error => {
+                    console.error('Error fetching user IDs:', error);
+                    errorDiv.textContent = 'Error fetching valid user IDs.';
+                });
+        }
+        
+        // Call this function when the page loads
+        window.onload = () => {
+            fetchValidUsers(); // Fetch and display users on load
+
+            fetch('/api/getTheme')
+            .then(response => response.json())
+            .then(data => {
+                if (data.theme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    themeToggle.textContent = 'Light Mode';
+                    themeToggle.classList.add('dark-mode');
+                    loginModal.classList.add('dark-mode');
+                    loginForm.classList.add('dark-mode');
+                }
+            })
+            .catch(err => console.error('Error fetching theme:', err));
+            loginModal.classList.add('active');
+        };
+
+        themeToggle.addEventListener('click', () => {
+            const isDarkMode = document.body.classList.toggle('dark-mode');
+            
+            if (isDarkMode) {
+                themeToggle.textContent = 'Light Mode';
+                themeToggle.classList.add('dark-mode');
+                loginModal.classList.add('dark-mode');
+                loginForm.classList.add('dark-mode');
+            } else {
+                themeToggle.textContent = 'Dark Mode';
+                themeToggle.classList.remove('dark-mode');
+                loginModal.classList.remove('dark-mode');
+                loginForm.classList.remove('dark-mode');
+            }
+            
+            // Save theme choice to the backend (without saving in the database)
+            fetch('/api/saveTheme', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ theme: isDarkMode ? 'dark' : 'light' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Theme saved:', data);
+            })
+            .catch(err => console.error('Error saving theme:', err));
+        });
+
+        loginPassword.addEventListener("keypress", function(event) {
+             if (event.key === "Enter") {
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("loginSubmit").click();
+             }
+        }); 
+
+        loginSubmit.addEventListener('click', () => {
+            const username = loginUsername.value.trim();
+            const password = loginPassword.value.trim();
+
+            if (username === '' || password === '') {
+                loginError.textContent = 'Please enter both username and password.';
+                return;
+            }
+
+            // Check credentials
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                loginModal.classList.remove('active');
+                displaySection.style.display = 'flex';
+            } else {
+                loginError.textContent = 'Invalid username or password.';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+        if (confirm('This system is not longer being used. Click confirm to redirect to new system')) {
+            window.location.href = 'https://mkkatholik.vercel.app';
+        }
+        fetch("https://pss-attendance.vercel.app/api/data/")
+            .then(response => response.json())
+            .then(data => {
+                data.sort((a, b) => new Date(a.check_in_time) - new Date(b.check_in_time));
+                data.forEach(row => {
+                    const hours = new Date(row.check_in_time).getHours();
+                    const currentHour = new Date(row.check_in_time).getHours();
+                    const currentMinutes = new Date(row.check_in_time).getMinutes();
+                    const period = currentHour < 12 ? 'Rehat' : 'Petang';
+                    const currentDay = new Date(row.check_in_time).getDay();
+                    let lewat = '';
+
+                    if(period == "Rehat"){
+                        if(currentDay != 3 && currentDay != 5){
+                            if(currentHour == 11 && currentMinutes >= 5 && currentMinutes <= 20) {
+                                lewat = " (Lewat)";
+                            } else if(currentHour == 10 && currentMinutes >= 25 && currentMinutes <= 40){
+                                lewat = " (Lewat)";
+                            }
+                        } else {
+                            if(currentDay == 5){
+                                if(currentHour == 10 && currentMinutes >= 40 && currentMinutes <= 55){
+                                    lewat = " (Lewat)"; 
+                                } else if(currentHour == 10 && currentMinutes >= 5 && currentMinutes <= 20){
+                                    lewat = " (Lewat)";
+                                }
+                            } else {
+                                if(currentHour == 11 && currentMinutes >= 5 && currentMinutes <= 20) {
+                                    lewat = " (Lewat)";
+                                } else if(currentHour == 10 && currentMinutes >= 40 && currentMinutes <= 55){
+                                    lewat = " (Lewat)";
+                                } else if(currentHour == 10 && currentMinutes >= 25 && currentMinutes <= 30){
+                                    lewat = " (Lewat)"; //I hate this
+                                } else if(currentHour == 10 && currentMinutes >= 5 && currentMinutes <= 20){
+                                    lewat = " (Lewat)";
+                                }
+                            }
+                        }
+                    }
+                    
+
+                    //if(existingRow){
+                        /**
+                        if((hours >= 12) && (existingRow.cells[2].textContent != new Date(row.check_in_time).toLocaleString())){
+                            const newRow = `<tr>
+                                                <td>${user.id}</td>
+                                                <td>${user.name}</td>
+                                                <td>${row.check_in_time}</td>
+                                                <td>${row.check_out_time}</td>
+                                                <td>${new Date().getHours() >= 12 ? 'Petang' : 'Rehat'}</td>
+                                            </tr>`;
+                            tableBody.innerHTML += newRow;
+                        } else {
+                        */
+                    //        existingRow.cells[2].textContent = row.check_in_time ? new Date(row.check_in_time).toLocaleString() : '';
+                    //        existingRow.cells[3].textContent = row.check_out_time ? new Date(row.check_out_time).toLocaleString() : '';
+                        //}
+                    //    existingRow.cells[4].textContent = hours >= 12 ? 'Petang' : 'Rehat';
+                    //} else {
+                        const newRow = `<tr>
+                                        <td>- ${row.id} -</td>
+                                        <td>${row.name}</td>
+                                        <td>${row.check_in_time ? (new Date(row.check_in_time).toLocaleString() + lewat) : ''}</td>
+                                        <td>${row.check_out_time ? new Date(row.check_out_time).toLocaleString() : ''}</td>
+                                        <td>${hours >= 12 ? 'Petang' : 'Rehat'}</td>
+                                    </tr>`;
+                        tableBody.innerHTML += newRow;
+                    //}
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        });
+
+        checkInButton.addEventListener('click', () => {
+            currentAction = 'Check In';
+            idInputDiv.style.display = 'flex';
+        });
+
+        checkOutButton.addEventListener('click', () => {
+            currentAction = 'Check Out';
+            idInputDiv.style.display = 'flex';
+        });
+
+        userIdInput.addEventListener('input', () => {
+            const userId = userIdInput.value.trim();
+            const userExists = validUsers.some(user => user.id === userId); // Compare as strings
+            if (userExists) {
+                errorDiv.textContent = '';
+                submitButton.disabled = false;
+            } else {
+                errorDiv.textContent = 'Invalid User ID.';
+                submitButton.disabled = true;
+            }
+        });
+
+        userIdInput.addEventListener("keypress", function(event) {
+             if (event.key === "Enter") {
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("submitButton").click();
+             }
+        }); 
+
+        submitButton.addEventListener('click', () => {
+            const userId = userIdInput.value.trim();
+            const user = validUsers.find(user => user.id === userId);
+
+            if (!user) {
+                errorDiv.textContent = 'Invalid User ID.';
+                return;
+            }
+
+            const currentHour = new Date().getHours();
+            const currentMinutes = new Date().getMinutes();
+            const period = currentHour < 12 ? 'Rehat' : 'Petang';
+            const currentDay = new Date().getDay();
+
+            let lewat = '';
+
+            if(currentAction == 'Check In'){
+                if(period == "Rehat"){
+                    if(currentDay != 3 && currentDay != 5){
+                        if(currentHour == 11 && currentMinutes >= 5 && currentMinutes <= 20) {
+                            lewat = " (Lewat)";
+                        } else if(currentHour == 10 && currentMinutes >= 25 && currentMinutes <= 40){
+                            lewat = " (Lewat)";
+                        }
+                    } else {
+                        if(currentDay == 5){
+                            if(currentHour == 10 && currentMinutes >= 40 && currentMinutes <= 55){
+                                lewat = " (Lewat)"; 
+                            } else if(currentHour == 10 && currentMinutes >= 5 && currentMinutes <= 20){
+                                lewat = " (Lewat)";
+                            }
+                        } else {
+                            if(currentHour == 11 && currentMinutes >= 5 && currentMinutes <= 20) {
+                                lewat = " (Lewat)";
+                            } else if(currentHour == 10 && currentMinutes >= 40 && currentMinutes <= 55){
+                                lewat = " (Lewat)";
+                            } else if(currentHour == 10 && currentMinutes >= 25 && currentMinutes <= 30){
+                                lewat = " (Lewat)"; //I hate this
+                            } else if(currentHour == 10 && currentMinutes >= 5 && currentMinutes <= 20){
+                                lewat = " (Lewat)";
+                            }
+                        }
+                    }
+                }
+            }
+
+            const currentTime = new Date().toLocaleString() + lewat;
+
+            const existingRow = findExistingRow("- " + userId + " -");
+
+            const updateData = {
+                id: userId,
+                name: user.name,
+                checkInTime: currentAction === 'Check In' ? currentTime : (existingRow ? existingRow.cells[2].textContent : ''),
+                checkOutTime: currentAction === 'Check Out' ? currentTime : (existingRow ? existingRow.cells[3].textContent : '')
+            };
+
+            if(!existingRow){
+                if(currentAction == 'Check Out'){
+                    errorDiv.textContent = 'You havent check it yet. Please check it before check out.';
+                    return;
+                }
+            } else {
+                const lastPeriod = existingRow.cells[4].textContent;
+                if (lastPeriod === period) {
+                    if (currentAction === 'Check In' && existingRow.cells[2].textContent != '') {
+                        alert(`You have already checked in for ${period}. You cannot check in again.`);
+                        return;
+                    } else if (currentAction === 'Check Out' && existingRow.cells[3].textContent != '') {
+                        alert(`You have already checked out for ${period}.`);
+                        return;
+                    }
+                } else if (currentAction === 'Check Out' && existingRow.cells[2].textContent == '') {
+                    errorDiv.textContent = `You haven't checked in for ${period} yet. Please check in before checking out.`;
+                    return;
+                }
+            }
+
+            fetch('https://pss-attendance.vercel.app/api/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updateData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Data saved successfully", data);
+                    if (existingRow) {
+                        if((new Date().getHours() >= 12) && (existingRow.cells[4].textContent == "Rehat")){
+                            const newRow = `<tr>
+                                                <td>- ${user.id} -</td>
+                                                <td>${user.name}</td>
+                                                <td>${updateData.checkInTime}</td>
+                                                <td>${updateData.checkOutTime}</td>
+                                                <td>${new Date().getHours() >= 12 ? 'Petang' : 'Rehat'}</td>
+                                            </tr>`;
+                            tableBody.innerHTML += newRow;
+                        } else {
+                            existingRow.cells[2].textContent = updateData.checkInTime;
+                            existingRow.cells[3].textContent = updateData.checkOutTime;
+                        }
+                    } else {
+                        // Append new row to table
+                        const newRow = `<tr>
+                                            <td>- ${user.id} -</td>
+                                            <td>${user.name}</td>
+                                            <td>${updateData.checkInTime}</td>
+                                            <td>${updateData.checkOutTime}</td>
+                                            <td>${new Date().getHours() >= 12 ? 'Petang' : 'Rehat'}</td>
+                                        </tr>`;
+                        tableBody.innerHTML += newRow;
+                    }
+                } else {
+                    console.error("Error saving data:", data.message);
+                    errorDiv.textContent = "Failed to save data: " + data.message;
+                }
+            })
+            .catch(error => {
+                console.error('Error during API call:', error);
+                errorDiv.textContent = "An error occurred: " + error;
+            });
+
+            fetch('https://pss-attendance.vercel.app/api/saveTodayCheckins', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updateData)
+            });
+
+            userIdInput.value = '';
+        });
+
+        function findExistingRow(userId) {
+            const rows = tableBody.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const rowId = rows[i].cells[0].textContent;
+                if (rowId === userId) {
+                    return rows[i];
+                }
+            }
+            return null;
+        }
+
+        exportButton.addEventListener('click', () => {
+            const table = document.getElementById('resultTable');
+            const wb = XLSX.utils.table_to_book(table, { sheet: "CheckInCheckOutData" });
+            XLSX.writeFile(wb, 'PSS Attendance-' + new Date().toLocaleDateString("en-GB") + '.xlsx');
+        });
+
+        resetButton.addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset the table? This action cannot be undone.')) {
+                fetch('https://pss-attendance.vercel.app/api/reset', {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        tableBody.innerHTML = '';  // Clear the table in the UI
+                    } else {
+                        alert('Error resetting the table.');
+                    }
+                })
+                .catch(error => console.error('Error resetting table:', error));
+            }
+        });
+
+        manageButton.addEventListener('click', () => {
+            window.location.href = 'userManage.html';
+        });
+        
+        historyButton.addEventListener('click', () => {
+            window.location.href = 'checkins.html';
+        });
+    </script>
+
+</body>
+</html>
