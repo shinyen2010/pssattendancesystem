@@ -1,0 +1,111 @@
+body {
+    font-family: Comics Sans MS, cursive, sans-serif;
+    background-color: lightslategrey;
+    margin: 0;
+    padding: 20px;
+    align-items: center;
+}
+
+h1 {
+    text-align : center;
+    color: blanchedalmond;
+    text-shadow: 10px 10px 10px #00000599;
+}
+
+p {
+    text-align: center;
+    color:blanchedalmond;
+    border: 0px;
+}
+
+.EnterID input[type=text] {
+    width : 250px;
+    padding: 7px 10px;
+    margin: 8px;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+}
+
+.EnterID input[type=submit] {
+    width : 100px;
+    padding: 7px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    
+}
+
+input[type=reset] {
+    width : 100px;
+    padding: 7px 10px;
+    margin: 8px 0;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: lightgray;
+}
+
+button {
+    background-color: black;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: auto;
+    justify-content: center;
+}
+
+button :hover {
+    opacity: 0.8;
+}
+
+.container {
+    padding: 16px;
+    background : white;
+    border: 10px solid black;
+    align-items: center;
+    justify-content: center;
+}
+
+table {
+    width : 90%;
+    border-collapse: collapse;
+    border: 3px solid black;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+th, td {
+    background-color:darkgray;
+    color:black;
+    text-align: center;
+    padding: 8px;
+    border: 3px solid black;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+}
+
+.author {
+    color: blanchedalmond;
+    font-family: Times New Roman;
+    text-align: center;
+}
+
+.welcome {
+    color: blanchedalmond;
+    font-family: Comic Sans MS;
+    border: none;
+    text-shadow: 10px 5px 10px #00000599;
+    padding-bottom: 10px;
+}

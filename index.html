@@ -1,0 +1,34 @@
+<!DOCTYPE = HTML>
+<html>
+    <head>
+        <title> PSS Attendance System </title>
+        <link rel="stylesheet" href="styles.css">
+        <script src = "script.js"></script>
+        <script> fetch('data.json') </script>
+    </head>
+    <body>
+        <h1>PSS Attendance System</h1>
+        <marquee direction="right" class="Welcome"> Welcome to PSS Attendance System </marquee>
+        <form class="EnterID" align="center">
+            <input type="text" placeholder="Enter Your ID">
+            <input type="submit" value="Submit">
+        </form>
+        <table rules="all" align="center">
+            <thead>
+                <tr>
+                    <th> ID </th>
+                    <th> Name </th>
+                    <th> Date </th>
+                    <th> Time </th>
+                </tr>
+            </thead>
+            <tbody id = PSSAttendanceSystem>
+                <!Attendance will be displayed  here>
+            </tbody>
+        </table>
+        <form align="center">
+            <input type="reset" value="Reset">
+        </form>
+        <h5 class="author">By tsy101021</h5>
+    </body>
+</html>
