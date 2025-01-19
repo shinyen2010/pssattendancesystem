@@ -30,7 +30,7 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
     document.getElementById("ID").value = ""
     
 document.getElementById("reset").addEventListener("click", function(event) {
-    document.getElementById("PSSAttendanceSystem").innerHTML = ""
+    document.getElementById("PSSAttendanceSystem").innerHTML = "";
 })
     
 
