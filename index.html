@@ -1,17 +1,16 @@
-<!DOCTYPE = HTML>
 <html>
     <head>
         <title> PSS Attendance System </title>
         <link rel="stylesheet" href="styles.css">
-        <script src = "script.js"></script>
+        <script src = "script.js" defer></script>
         <script> fetch('data.json') </script>
     </head>
     <body>
         <h1>PSS Attendance System</h1>
         <marquee direction="right" class="Welcome"> Welcome to PSS Attendance System </marquee>
-        <form class="EnterID" align="center">
-            <input type="text" placeholder="Enter Your ID">
-            <input type="submit" value="Submit">
+        <form id="idForm" class="EnterID" align="center">
+            <input id="ID" type="text" placeholder="Enter Your ID" required>
+            <button id="submit" type="submit">Submit</button>
         </form>
         <table rules="all" align="center">
             <thead>
@@ -27,7 +26,7 @@
             </tbody>
         </table>
         <form align="center">
-            <input type="reset" value="Reset">
+            <button id="reset" type="reset">Reset</button>
         </form>
         <h5 class="author">By tsy101021</h5>
     </body>
