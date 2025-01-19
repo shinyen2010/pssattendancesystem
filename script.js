@@ -28,7 +28,11 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
     const date = currentTime.toLocaleDateString("en-GB");
     const time = currentTime.toLocaleTimeString();
     document.getElementById("ID").value = ""
+    
+document.getElementById("reset").addEventListener("reset", function(event) {
     document.getElementById("PSSAttendanceSystem").innerHTML = ""
+})
+    
 
     //添加到打卡记录
     const PSSAttendanceSystem = document.getElementById("PSSAttendanceSystem");
