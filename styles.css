@@ -27,7 +27,7 @@ p {
     border-radius: 10px;
 }
 
-.EnterID input[type=submit] {
+.EnterID button {
     width : 100px;
     padding: 7px 10px;
     margin: 8px 0;
@@ -41,7 +41,7 @@ p {
     
 }
 
-input[type=reset] {
+button {
     width : 100px;
     padding: 7px 10px;
     margin: 8px 0;
@@ -50,29 +50,6 @@ input[type=reset] {
     border: none;
     border-radius: 10px;
     background-color: lightgray;
-}
-
-button {
-    background-color: black;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: auto;
-    justify-content: center;
-}
-
-button :hover {
-    opacity: 0.8;
-}
-
-.container {
-    padding: 16px;
-    background : white;
-    border: 10px solid black;
-    align-items: center;
-    justify-content: center;
 }
 
 table {
