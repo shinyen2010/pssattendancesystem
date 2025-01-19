@@ -29,7 +29,7 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
     const time = currentTime.toLocaleTimeString();
     document.getElementById("ID").value = ""
     
-document.getElementById("reset").addEventListener("reset", function(event) {
+document.getElementById("reset").addEventListener("click", function(event) {
     document.getElementById("PSSAttendanceSystem").innerHTML = ""
 })
     
