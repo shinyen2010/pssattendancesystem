@@ -21,7 +21,7 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
             }
         }
         if (name === "") {
-            alert("ID not found in data!");
+            alert("ID not found!");
             return;
         }
     let currentTime = new Date();
@@ -31,7 +31,7 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
     
     //清空打卡记录
 document.getElementById("reset").addEventListener("click", function(event) {
-    alert("Your attendance records will be removed!");
+    alert("Your attendance record has been cleared!");
     document.getElementById("PSSAttendanceSystem").innerHTML = "";
 })
 
