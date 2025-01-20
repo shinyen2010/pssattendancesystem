@@ -30,7 +30,7 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
     document.getElementById("ID").value = ""
     
 document.getElementById("reset").addEventListener("click", function(event) {
-    alert("Are you sure you want to clear all the attendance records?");
+    confirm("Are you sure you want to clear all the attendance records?");
     document.getElementById("PSSAttendanceSystem").innerHTML = "";
 })
     
