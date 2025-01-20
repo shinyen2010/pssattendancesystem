@@ -42,7 +42,8 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
 });
 
     //提问是否要清空打卡记录
-    function checker() {
+document.getElementById("reset").addEventListener("click", function(event) {
+    confirm("Are you sure you want to clear all the attendance records?");
         if (confirm("Are you sure you want to clear all the attendance records?")) {
             document.getElementById("PSSAttendanceSystem").innerHTML = "";
         }
