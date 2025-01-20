@@ -31,7 +31,7 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
     
     //清空打卡记录
 document.getElementById("reset").addEventListener("click", function(event) {
-    alert("Are you sure you want to clear all the attendance records?");
+    alert("Your attendance records will be removed!");
     document.getElementById("PSSAttendanceSystem").innerHTML = "";
 })
 
