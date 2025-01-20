@@ -29,14 +29,24 @@ document.getElementById("idForm").addEventListener("submit", function(event) {
     const time = currentTime.toLocaleTimeString();
     document.getElementById("ID").value = ""
     
-document.getElementById("reset").addEventListener("click", function(event) {
-    confirm("Are you sure you want to clear all the attendance records?");
-    document.getElementById("PSSAttendanceSystem").innerHTML = "";
-})
-    
+    //清空打卡记录
+//document.getElementById("reset").addEventListener("click", function(event) {
+    //confirm("Are you sure you want to clear all the attendance records?");
+    //document.getElementById("PSSAttendanceSystem").innerHTML = "";
+//})
 
     //添加到打卡记录
     const PSSAttendanceSystem = document.getElementById("PSSAttendanceSystem");
     const newRole = PSSAttendanceSystem.insertRow();
     newRole.innerHTML = '<td>' + ID + "</td><td>" + name + "</td><td>" + date + "</td><td>" + time + "</td>";
 });
+
+    //提问是否要清空打卡记录
+    function checker() {
+        if (confirm("Are you sure you want to clear all the attendance records?")) {
+            document.getElementById("PSSAttendanceSystem").innerHTML = "";
+        }
+        if (result == false) {
+            return;
+        }
+    }
